@@ -18,7 +18,7 @@ You will need to install the bower dependencies:
 ## Reporting Bugs or submitting fixes
 
 If you run into problems, and trust us, there are likely plenty of them at this
-point -- please create an [Issue](https://github.com/appcelerator/ingot/issues)
+point -- please create an [Issue](https://github.com/appcelerator/ingot-web-server/issues)
 or, even better, send us a pull request.
 
 ## Contributing
