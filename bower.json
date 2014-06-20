@@ -1,0 +1,11 @@
+{
+	"name": "ingot",
+	"private": true,
+	"dependencies": {
+		"bootstrap": ""
+	},
+	"ignore": [
+		"**/.*",
+		"public/lib"
+	]
+}
