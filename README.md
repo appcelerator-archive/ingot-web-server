@@ -10,11 +10,6 @@ install this service.
 
 	npm install -g ingot
 
-You will need to install the bower dependencies:
-
-	cd /path/to/ingot-web-server
-	node_modules/bower/bin/bower install
-
 ## Reporting Bugs or submitting fixes
 
 If you run into problems, and trust us, there are likely plenty of them at this

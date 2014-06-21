@@ -1,4 +1,5 @@
 var bodyParser = require('body-parser'),
+	bower = require('bower'),
 	cookieParser = require('cookie-parser'),
 	express = require('express'),
 	favicon = require('serve-favicon'),
@@ -32,7 +33,9 @@ router.all('/', function (req, res) {
 /**
  * Initializes the Express app
  */
-exports.load = function load() {
+exports.load = function load(cfg, callback) {
+	callback || (callback = function () {});
+
 	app.locals.title = 'Appcelerator Web Server Service';
 
 	app.use(responseTime(5));
@@ -77,6 +80,12 @@ exports.load = function load() {
 			error: {}
 		});
 	});
+
+	console.info('www: installing bower components');
+	bower.commands.install([], {}, {
+		cwd: __dirname,
+		directory: 'public/lib'
+	}).on('error', callback).on('end', function () { callback(); });
 };
 
 /**
