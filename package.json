@@ -4,7 +4,11 @@
 	"keywords": [
 		"ingot"
 	],
-	"version": "0.1.1",
+	"version": "0.1.2",
+	"ingot": {
+		"type": "service",
+		"api": "1.0"
+	},
 	"author": {
 		"name": "Appcelerator, Inc.",
 		"email": "npmjs@appcelerator.com"
