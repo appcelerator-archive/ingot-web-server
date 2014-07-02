@@ -4,9 +4,10 @@ var bodyParser = require('body-parser'),
 	express = require('express'),
 	favicon = require('serve-favicon'),
 	http = require('http'),
-	logger = require('morgan'),
+	morgan = require('morgan'),
 	responseTime = require('response-time'),
 
+	logger,
 	app = express(),
 	httpServer,
 	router = express.Router(),
@@ -36,6 +37,15 @@ router.all('/', function (req, res) {
 exports.load = function load(cfg, callback) {
 	callback || (callback = function () {});
 
+	cfg || (cfg = {});
+	var httpLogger;
+	if (cfg.logger) {
+		cfg.logger.addLevel('www', 'cyan');
+		cfg.logger.addLevel('http', 'grey');
+		logger = cfg.logger.www;
+		httpLogger = cfg.logger.http;
+	}
+
 	app.locals.title = 'Appcelerator Web Server Service';
 
 	app.use(responseTime(5));
@@ -45,7 +55,14 @@ exports.load = function load(cfg, callback) {
 	app.set('layout', 'layouts/default');
 	app.engine('hjs', require('hogan-express'));
 
-	app.use(logger());
+	app.use(morgan({
+		format: 'dev',
+		stream: {
+			write: function (msg) {
+				httpLogger && httpLogger(msg.trim());
+			}
+		}
+	}));
 	app.use(favicon(__dirname + '/public/img/favicon.png'));
 	app.use(bodyParser.json());
 	app.use(bodyParser.urlencoded());
@@ -81,7 +98,7 @@ exports.load = function load(cfg, callback) {
 		});
 	});
 
-	console.info('www: installing bower components');
+	logger('installing bower components');
 	bower.commands.install([], {}, {
 		cwd: __dirname,
 		directory: 'public/lib'
@@ -105,7 +122,7 @@ exports.start = function start(cfg, callback) {
 
 	var port = cfg['ingot-web-server'] && cfg['ingot-web-server'].port || 8080;
 	httpServer = http.createServer(app).listen(port, function () {
-		console.info('www: started server on port %d', port);
+		logger('started server on port %d', port);
 		running = true;
 		typeof callback === 'function' && callback();
 	});
